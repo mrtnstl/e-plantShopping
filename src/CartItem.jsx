@@ -9,11 +9,12 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
-
+    const total = cart.reduce((sum, current) => (sum + parseFloat(current.cost.substr(1)) * current.quantity), 0);
+    return total;
   };
 
   const handleContinueShopping = (e) => {
-
+    onContinueShopping(e);
   };
 
 
@@ -29,8 +30,8 @@ const CartItem = ({ onContinueShopping }) => {
     const selectedItem = cart.find(plant => plant.name === item.name);
     //const name = selectedItem.name;
     const quantity = selectedItem.quantity - 1;
-    dispatch(updateQuantity({ name: item.name, quantity }));
-  };
+    quantity <= 0 ? dispatch(removeItem(item.name)) : dispatch(updateQuantity({ name: item.name, quantity }));
+  }
 
   const handleRemove = (item) => {
     dispatch(removeItem(item.name));
@@ -38,6 +39,12 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    const total = parseFloat(item.cost.substr(1)) * item.quantity;
+    return total;
+  };
+
+  const handleCheckout = () => {
+    window.alert("Checkout function not available!");
   };
 
   return (
@@ -65,7 +72,7 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={() => handleCheckout()}>Checkout</button>
       </div>
     </div>
   );
